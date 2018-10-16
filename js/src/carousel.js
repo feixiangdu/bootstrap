@@ -84,6 +84,7 @@ const Selector = {
   ACTIVE      : '.active',
   ACTIVE_ITEM : '.active.carousel-item',
   ITEM        : '.carousel-item',
+  ITEM_IMG    : '.carousel-item img',
   NEXT_PREV   : '.carousel-item-next, .carousel-item-prev',
   INDICATORS  : '.carousel-indicators',
   DATA_SLIDE  : '[data-slide], [data-slide-to]',
@@ -114,8 +115,8 @@ class Carousel {
     this._config            = this._getConfig(config)
     this._element           = element
     this._indicatorsElement = this._element.querySelector(Selector.INDICATORS)
-    this._touchSupported    = 'ontouchstart' in document.documentElement || navigator.maxTouchPoints > 0
     this._pointerEvent      = Boolean(window.PointerEvent || window.MSPointerEvent)
+    this._touchSupported    = 'ontouchstart' in document.documentElement || this._pointerEvent
 
     this._addEventListeners()
   }
@@ -323,6 +324,7 @@ class Carousel {
       }
     }
 
+    $(this._element.querySelectorAll(Selector.ITEM_IMG)).on('dragstart', (e) => e.preventDefault())
     if (this._pointerEvent) {
       $(this._element).on(Event.POINTERDOWN, (event) => start(event))
       $(this._element).on(Event.POINTERUP, (event) => end(event))
